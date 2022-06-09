@@ -9,7 +9,7 @@ const config = require('../config')
 //引入发送邮箱的文件
 const maileConfig = require('../utils/sendCode/maileFonfig')
 const LocalStorage = require('node-localstorage').LocalStorage,
-localStorage = new LocalStorage('../utils/sendCode/scratch')
+localStorage = new LocalStorage('./scratch')
 
 //注册
 exports.register = (req, res) => {
