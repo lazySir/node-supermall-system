@@ -1,6 +1,12 @@
 # node_shop-back
-后台管理系统
+node后台系统
+# 下载依赖
+npm i
+# 运行项目
 
+supervisor app.js 
+
+注意：需要有全局的supervisor包。（npm i supervisor -g）
 # 注册接口
 
 method：post
