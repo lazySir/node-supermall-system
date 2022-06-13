@@ -60,6 +60,8 @@ method:get
 
 接口：/user/getUserInfo
 
+header：需要token
+
 ```javascript
 {
 	"code": 200,
@@ -76,6 +78,8 @@ method:get
 # 上传用户头像
 
 接口：/user/changeAvatar
+
+header：需要token
 
 参数：file   key：img value ：图片 
 
