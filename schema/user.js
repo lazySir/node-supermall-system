@@ -16,11 +16,18 @@ const password = joi
 const code = joi.required()
 const email = joi.required()
 //注册和登录表单的验证规则对象
-exports.user_schema = {
+exports.user_schema_register = {
   body: {
     phone,
     password,
     code,
     email,
+  },
+}
+
+exports.user_schema_login = {
+  body: {
+    phone,
+    password,
   },
 }

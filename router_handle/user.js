@@ -9,7 +9,7 @@ const config = require('../config')
 //引入发送邮箱的文件
 const maileConfig = require('../utils/sendCode/maileFonfig')
 const LocalStorage = require('node-localstorage').LocalStorage,
-localStorage = new LocalStorage('./scratch')
+  localStorage = new LocalStorage('./scratch')
 
 //注册
 exports.register = (req, res) => {
@@ -62,11 +62,7 @@ exports.register = (req, res) => {
       )
       //数据库语句：写入用户信息列表
       const sql1 = `insert into userinfo set?`
-      db.query(sql1,
-        { phone: userinfo.phone,
-          email: userinfo.email 
-        }, 
-        (err, results) => {
+      db.query(sql1, { phone: userinfo.phone, email: userinfo.email }, (err, results) => {
         if (err) return res.cc(err)
         if (results.affectedRows != 1) return res.cc('注册用户失败')
       })
@@ -88,9 +84,8 @@ exports.sendCode = (req, res) => {
   //保存验证码和邮箱，时间
   let user = {}
   let email = req.body.email
-
+  if (!email) return res.cc('请输入邮箱。')
   let code = createSixNum()
-  console.log(code)
   let time = new Date().getTime()
   user.code = code
   user.time = time
