@@ -6,7 +6,11 @@ npm i
 
 supervisor app.js 
 
-注意：需要有全局的supervisor包。（npm i supervisor -g）
+注意：需要有全局的supervisor包。
+```
+npm i supervisor -g
+
+```
 # 注册接口
 
 method：post
