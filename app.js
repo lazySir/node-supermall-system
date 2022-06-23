@@ -79,7 +79,10 @@ app.use((err, req, res, next) => {
   res.cc(err)
 })
 
-
+//--------------公共功能区域路由--------
+//生成图片验证码
+const svgCaptcha = require('./router/commonRouter/svgCaptcha')
+app.use('/api',svgCaptcha)
 
 
 //---------------用户信息模块------------
