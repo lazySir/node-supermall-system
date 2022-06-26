@@ -7,7 +7,11 @@ const joi = require('@hapi/joi')
 // pattern（正则表达式）：必须符合正则表达式的规则
 
 //用户名的验证规则
-const phone = joi.string().pattern(/^(?:(?:\+|00)86)?1\d{10}$/).required().error(new Error('请输入正确的手机号码！'))
+const phone = joi
+  .string()
+  .pattern(/^(?:(?:\+|00)86)?1\d{10}$/)
+  .required()
+  .error(new Error('请输入正确的手机号码！'))
 //密码的验证规则
 const password = joi.string().required().error(new Error('密码不能为空！'))
 //邮箱的验证规则
@@ -30,5 +34,7 @@ exports.user_schema_login = {
   },
 }
 exports.user_schema_email = {
-  email,
+  body: {
+    email,
+  },
 }
