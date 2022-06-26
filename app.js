@@ -65,7 +65,7 @@ app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api/]}))//解
 //-------------用户注册路由模块-----------------------
 
 //导入并使用用户注册路由模块
-const userRouter = require('./router/user')
+const userRouter = require('./router/user/userAccount')
 app.use('/api', userRouter)
 //捕获验证失败的错误，并把验证失败的结果响应给客户端
 const joi = require('@hapi/joi')
@@ -85,16 +85,17 @@ const svgCaptcha = require('./router/commonRouter/svgCaptcha')
 app.use('/api',svgCaptcha)
 
 
-//---------------用户信息模块------------
-//导入并使用用户路由模块
-const userinfoRouter = require('./router/userinfo')
+//---------------用户模块------------
+//导入并使用用户信息路由模块
+const userinfoRouter = require('./router/user/userinfo')
 app.use('/user',userinfoRouter)
 
-
-
+//导入并使用用户获取所有商品分类的路由模块
+const userGetAllGoodsCategory = require('./router/user/userGoods')
+app.use('/user',userGetAllGoodsCategory)
 
 //---------------服务器------------------
 //创建服务器
 app.listen(3007, () => {
-  console.log('api server is running at http://192.168.123.147:3007')
+  console.log('api server is running at http://127.0.0.1:3007')
 })

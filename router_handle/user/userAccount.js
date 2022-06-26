@@ -1,13 +1,13 @@
 //导入数据库
-const db = require('../db/index')
+const db = require('../../db/index')
 //导入bcryptjs  用来加密密码
 const bcrypt = require('bcryptjs')
 //导入生成token的包
 const jwt = require('jsonwebtoken')
 //导入全局解密的js文件
-const config = require('../config')
+const config = require('../../config')
 //引入发送邮箱的文件
-const maileConfig = require('../utils/sendCode/maileFonfig')
+const maileConfig = require('../../utils/sendCode/maileFonfig')
 const LocalStorage = require('node-localstorage').LocalStorage,
   localStorage = new LocalStorage('./scratch')
 
@@ -15,6 +15,7 @@ const LocalStorage = require('node-localstorage').LocalStorage,
 exports.register = (req, res) => {
   //获取客户端提交到服务器的用户信息
   const userinfo = req.body
+  console.log(userinfo)
   //获取缓存的验证码
   //里面有邮箱（email） code 和 发送时间（time）
   let userCodeInfo = localStorage.getItem(userinfo.email)

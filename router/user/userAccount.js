@@ -1,9 +1,9 @@
 //注册与登录模块
 const express = require('express')
 const router = express.Router()
-const router_handle_user=require('../router_handle/user')
+const router_handle_user=require('../../router_handle/user/userAccount')
 //引入joi验证规则
-const {user_schema_register,user_schema_login} =require('../schema/user')
+const {user_schema_register,user_schema_login} =require('../../schema/user')
 //导入验证表单数据的中间件
 const expressJoi =require('@escook/express-joi')
 

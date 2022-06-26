@@ -1,5 +1,5 @@
 //导入数据库操作模块
-const db = require('../db/index')
+const db = require('../../db/index')
 
 //获取用户信息路由
 exports.getUserInfo = (req, res) => {
