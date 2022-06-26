@@ -96,3 +96,18 @@ header：需要token
 	"imgUrl": "/userImg/IMG_7866(20220606-221427).JPG"
 }
 ```
+# 获取图片验证码
+
+接口：/api/getSvgCaptcha
+
+前端将生成cookie：key：captch value：图片内容 
+
+参数：无需参数
+
+返回
+
+```javascript
+svg图片  
+
+在img的src中直接写接口地址即可
+```
