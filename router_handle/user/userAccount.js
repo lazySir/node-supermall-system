@@ -15,7 +15,6 @@ const LocalStorage = require('node-localstorage').LocalStorage,
 exports.register = (req, res) => {
   //获取客户端提交到服务器的用户信息
   const userinfo = req.body
-  console.log(userinfo)
   //获取缓存的验证码
   //里面有邮箱（email） code 和 发送时间（time）
   let userCodeInfo = localStorage.getItem(userinfo.email)
