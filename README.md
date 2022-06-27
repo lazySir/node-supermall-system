@@ -111,3 +111,76 @@ svg图片
 
 在img的src中直接写接口地址即可
 ```
+
+# 用户获取所有商品分类
+
+地址：/user/getAllGoodsCategory
+
+参数：无需参数 
+
+请求头：需要token
+
+返回式例
+
+```javascript
+[
+	{
+		"id": 1,
+		"category1_name": "图书、音像、电子书刊",
+		"type_id": 0,
+		"child": [
+			{
+				"id": 1,
+				"parent_id": 0,
+				"category2_name": "电子书刊",
+				"type_id": 0,
+				"child": [
+					{
+						"id": 1,
+						"parent_id": 0,
+						"category3_name": "电子书",
+						"type_id": 0
+					},
+					{
+						"id": 2,
+						"parent_id": 0,
+						"category3_name": "网络原创",
+						"type_id": 0
+					},
+					{
+						"id": 3,
+						"parent_id": 0,
+						"category3_name": "数字杂志",
+						"type_id": 0
+					},
+					{
+						"id": 4,
+						"parent_id": 0,
+						"category3_name": "多媒体图书",
+						"type_id": 0
+					}
+				]
+			},
+			{
+				"id": 2,
+				"parent_id": 0,
+				"category2_name": "音像",
+				"type_id": 1,
+				"child": []
+			},
+			{
+				"id": 3,
+				"parent_id": 0,
+				"category2_name": "英文原版",
+				"type_id": 2,
+				"child": []
+			},
+			{
+				"id": 4,
+				"parent_id": 0,
+				"category2_name": "文艺",
+				"type_id": 3,
+				"child": []
+			},
+]
+```
