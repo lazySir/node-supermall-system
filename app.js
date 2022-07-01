@@ -7,9 +7,7 @@ const bodyParser = require('body-parser')
 //引入path
 const path =require('path')
 
-//-----------构建实例区---------------
-
-
+//-----------构建服务器实例区---------------
 
 //创建express实例
 const app = express()
@@ -24,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 //------------------------------------
 
 
-//------------使用插件区域-------------
+//------------使用服务器插件区域-------------
 
 app.use(cors())
 //配置解析表单数据的中间件
@@ -56,9 +54,13 @@ app.use((req, res, next) => {
 const expressJWT=require('express-jwt')
 const config=require('./config')
                                    //凡是以api开头的接口都不需要解密 path里面写的是正则表达式
-app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api/]}))//解密过程
+app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api|admin/]}))//解密过程
 
+//------------管理员路由模块------------------------
 
+//管理员获取商品分类路由
+const adminGetCategoryRouter = require('./router/admin/goods')
+app.use('/admin',adminGetCategoryRouter)
 
 
 
