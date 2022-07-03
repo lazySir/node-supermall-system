@@ -9,6 +9,6 @@ exports.admin_schema_category2Id = {
 }
 exports.admin_schema_category3Id = {
   params:{
-    category1Id
+    category2Id
   }
 }
