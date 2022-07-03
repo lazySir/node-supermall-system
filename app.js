@@ -61,6 +61,10 @@ app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api|admin/]})
 //管理员获取商品分类路由
 const adminGetCategoryRouter = require('./router/admin/goods')
 app.use('/admin',adminGetCategoryRouter)
+//管理员获取指定分类下的平台属性
+const adminGetAttrRouter=require('./router/admin/attr')
+app.use('/admin',adminGetAttrRouter)
+
 
 
 
