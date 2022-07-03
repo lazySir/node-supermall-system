@@ -59,5 +59,9 @@ exports.getAllGoodsCategory = async (req, res) => {
   }
   c2=copy(c2,c3)
   c1=copy(c1,c2)
-  res.send(c1)
+  res.json({
+    "code":200,
+    "message":"成功",
+    "data":c1
+  })
 }
