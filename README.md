@@ -182,3 +182,24 @@ return
 	"data": data
 }
 ```
+
+# 管理员获取平台属性
+
+url：/admin/goods/attrInfoList/:category1Id/:category2Id/:category3Id
+
+method:get
+
+return
+
+```javascript
+{
+	"code": 200,
+	"message": "成功",
+	"data": [
+		{	"id": 1,
+		"attr_name": "仙剑奇侠传",
+		"valueList:[]
+		}
+		    	]
+}
+```
