@@ -203,3 +203,44 @@ return
 		    	]
 }
 ```
+
+# 管理员注册
+
+url:/api/admin/register
+
+method:post
+
+data:
+
+```
+username
+password
+code  (内部码)
+```
+
+# 管理员登陆接口
+
+url:/api/admin/login
+
+method:post
+
+data:
+
+```
+username
+password
+```
+
+# 管理员退出登录接口
+
+url：/api/admin/logout
+
+method:post
+
+# 获取管理员信息
+
+url：/admin/getAdminInfo
+
+method：get
+
+Header：Authorization ：token
