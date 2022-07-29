@@ -17,7 +17,7 @@ npm i supervisor -g
 
 ```
 
-# 注册接口
+# 用户注册接口
 
 url：/api/register
 
@@ -46,7 +46,7 @@ return：邮件
 
 <br/>
 
-# 登录接口
+# 用户登录接口
 
 url：/api/login
 
