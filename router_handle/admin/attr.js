@@ -50,3 +50,7 @@ exports.getAttrInfoList = async (req, res) => {
     "data":attr
   })
 }
+//新增属性值
+exports.saveAttrInfo = (req,res)=>{
+  res.send('ok!')
+}

@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 const expressJWT=require('express-jwt')
 const config=require('./config')
                                    //凡是以api开头的接口都不需要解密 path里面写的是正则表达式
-app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api|admin/]}))//解密过程
+app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api/]}))//解密过程
 
 //------------管理员路由模块------------------------
 
@@ -64,8 +64,12 @@ app.use('/admin',adminGetCategoryRouter)
 //管理员获取指定分类下的平台属性
 const adminGetAttrRouter=require('./router/admin/attr')
 app.use('/admin',adminGetAttrRouter)
-
-
+//管理员账户的管理
+const adminAccount =require('./router/admin/adminAccount')
+app.use('/api',adminAccount)
+//管理员账户信息
+const adminInfo =require('./router/admin/adminInfo')
+app.use('/admin',adminInfo)
 
 
 //-------------用户注册路由模块-----------------------

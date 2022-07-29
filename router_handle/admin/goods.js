@@ -1,5 +1,5 @@
 const db = require('../../db')
-
+//获取商品一级分类
 exports.getCategory1 = (req, res) => {
   //获取商品一级分类
   const sql = `select * from goodsCategory1`
@@ -18,7 +18,7 @@ exports.getCategory1 = (req, res) => {
     })
   })
 }
-
+//获取商品二级分类
 exports.getCategory2 = (req, res) => {
   //获取一级分类的id
   category1Id = req.params.category1Id
@@ -38,7 +38,7 @@ exports.getCategory2 = (req, res) => {
     })
   })
 }
-//商品三级分类
+//获取商品三级分类
 exports.getCategory3 = (req, res) => {
     //获取二级分类的id
     category2Id = req.params.category2Id

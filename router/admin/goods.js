@@ -13,5 +13,5 @@ router.get('/goods/getCategory1',router_handle_admin_goods.getCategory1)
 router.get('/goods/getCategory2/:category1Id',expressJoi(admin_schema_category2Id),router_handle_admin_goods.getCategory2)
 //商品三级分类路由
 router.get('/goods/getCategory3/:category2Id',expressJoi(admin_schema_category3Id),router_handle_admin_goods.getCategory3)
-
+//
 module.exports=router
