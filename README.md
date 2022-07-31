@@ -244,3 +244,31 @@ url：/admin/getAdminInfo
 method：get
 
 Header：Authorization ：token
+
+# 获取账号密码管理获取列表
+
+url：http://127.0.0.1:3007/admin/getPswManagerList/:page/:limit
+
+method:get
+
+Header：Authorization ：token
+
+# 账号密码管理添加数据
+
+url：/admin/addPswManager
+
+method：post
+
+Header：Authorization ：token
+
+# 上传图片
+
+url：/api/fileUpload
+
+method：post
+
+Body：{
+
+file： key：img value ：
+
+}
