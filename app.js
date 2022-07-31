@@ -70,7 +70,9 @@ app.use('/api',adminAccount)
 //管理员账户信息
 const adminInfo =require('./router/admin/adminInfo')
 app.use('/admin',adminInfo)
-
+//管理账号密码
+const passwordManager = require('./router/admin/passwordManager')
+app.use('/admin',passwordManager)
 
 //-------------用户注册路由模块-----------------------
 
