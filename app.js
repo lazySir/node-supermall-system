@@ -73,6 +73,9 @@ app.use('/admin',adminInfo)
 //管理账号密码
 const passwordManager = require('./router/admin/passwordManager')
 app.use('/admin',passwordManager)
+//上传头像
+const fileUpload =require('./router/admin/fileUpload')
+app.use('/api',fileUpload)
 
 //-------------用户注册路由模块-----------------------
 
