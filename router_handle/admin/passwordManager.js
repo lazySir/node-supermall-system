@@ -34,19 +34,41 @@ exports.getPswManagerList = (req, res) => {
 //增加数据
 exports.addPswManager = (req, res) => {
   //获取前端发送过来的数据
-  const dataInfo = req.body.pswForm
+  const dataInfo = req.body
   //根据token获取username
   const { username } = req.user
   //sql语句
   const sql = 'insert into passwordManager set?'
-  db.query(sql, { username: username,LOGO:dataInfo.LOGO, account: dataInfo.account, password: dataInfo.password, name: dataInfo.name },(err,results)=>{
+  db.query(sql, { username: username, LOGO: dataInfo.LOGO, account: dataInfo.account, password: dataInfo.password, name: dataInfo.name }, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows != 1) return res.cc('添加数据失败')
     res.json({
-      "code":200,
-      "message":"添加数据成功",
+      code: 200,
+      message: '添加数据成功',
     })
-
   })
 }
-
+//修改数据
+exports.updatePswManager = (req, res) => {
+  //获取前端发送过来的数据
+  const dataInfo = req.body
+  //保险起见还是获取token里的username
+  const { username } = req.user
+  //根据id和username修改数据
+  const sql = `update passwordManager set name="${dataInfo.name}",password="${dataInfo.password}",account="${dataInfo.account}" ,LOGO="${dataInfo.LOGO}" where id="${dataInfo.id}"  `
+  db.query(sql, (err, results) => {
+    if (err) return res.cc(err)
+    if (results.affectedRows !== 1) return res.cc('修改数据失败')
+    return res.cc('修改数据成功',200)
+  })
+}
+//删除数据
+exports.deletePswManager=(req,res)=>{
+  const pswID=req.params.id
+  const sql=`delete from passwordManager where id=?`
+  db.query(sql,pswID,(err,results)=>{
+    if(err)return res.cc(err)
+    if (results.affectedRows !== 1) return res.cc('删除数据失败')
+    return res.cc('删除数据成功',200)
+  })
+}
