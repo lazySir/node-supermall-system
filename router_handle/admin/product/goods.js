@@ -1,4 +1,4 @@
-const db = require('../../db')
+const db = require('../../../db')
 //获取商品一级分类
 exports.getCategory1 = (req, res) => {
   //获取商品一级分类

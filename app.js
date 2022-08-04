@@ -19,8 +19,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 
-//------------------------------------
-
 
 //------------使用服务器插件区域-------------
 
@@ -38,6 +36,8 @@ app.use(
 )
 
 //-----------路由之前的中间件---------------
+
+
 //路由之前封装res.cc这个函数 （中间件）
 app.use((req, res, next) => {
   //code 默认值为205 表示失败  如果为200表示成功
@@ -54,28 +54,51 @@ app.use((req, res, next) => {
 const expressJWT=require('express-jwt')
 const config=require('./config')
                                    //凡是以api开头的接口都不需要解密 path里面写的是正则表达式
-app.use(expressJWT({secret:config.jwtSecretKey}).unless({path:[/^\/api/]}))//解密过程
+app.use(expressJWT({secret:config.token.jwtSecretKey}).unless({path:[/^\/api/]}))//解密过程
 
 //------------管理员路由模块------------------------
 
-//管理员获取商品分类路由
-const adminGetCategoryRouter = require('./router/admin/goods')
-app.use('/admin',adminGetCategoryRouter)
-//管理员获取指定分类下的平台属性
-const adminGetAttrRouter=require('./router/admin/attr')
-app.use('/admin',adminGetAttrRouter)
+
+//-------------管理员公用模块-------------------------
+
 //管理员账户的管理
 const adminAccount =require('./router/admin/adminAccount')
 app.use('/api',adminAccount)
+
 //管理员账户信息
 const adminInfo =require('./router/admin/adminInfo')
 app.use('/admin',adminInfo)
+
+
+
+
+
+//----------------产品模块----------------------------------
+//管理员获取商品分类路由
+const adminGetCategoryRouter = require('./router/admin/product/goods')
+app.use('/admin',adminGetCategoryRouter)
+//管理员获取指定分类下的平台属性
+const adminGetAttrRouter=require('./router/admin/product/attr')
+app.use('/admin',adminGetAttrRouter)
+
+
+
+
+
+
+//---------------账号密码存储模块----------------------------
 //管理账号密码
-const passwordManager = require('./router/admin/passwordManager')
+const passwordManager = require('./router/admin/pswStore/passwordManager')
 app.use('/admin',passwordManager)
 //上传头像
-const fileUpload =require('./router/admin/fileUpload')
+const fileUpload =require('./router/admin/pswStore/fileUpload')
 app.use('/api',fileUpload)
+
+
+
+
+
+
 
 //-------------用户注册路由模块-----------------------
 

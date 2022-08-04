@@ -1,4 +1,4 @@
-const db=require('../../db')
+const db=require('../../../db')
 //上传图片
 exports.fileUpload=(req,res)=>{
   // req.file 是 `avatar` 文件的信息

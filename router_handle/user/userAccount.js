@@ -146,7 +146,7 @@ exports.login = (req, res) => {
     //对用户的信息进行加密 生成Token
     //三个参数:  加密对象  解密字符串 有效时长
 
-    const tokenStr = jwt.sign(user, config.jwtSecretKey, { expiresIn: config.expiresIn })
+    const tokenStr = jwt.sign(user, config.token.jwtSecretKey, { expiresIn: config.token.expiresIn })
     res.json({
       code: 200,
       message: '登录成功',

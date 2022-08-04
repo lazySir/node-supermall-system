@@ -61,7 +61,7 @@ exports.login = (req, res) => {
     const admin = { ...results[0], password: '' } //...为展开运算符 后面是把对象的属性覆盖
     //对用户的信息进行加密 生成Token
     //三个参数:  加密对象  解密字符串 有效时长
-    const tokenStr = jwt.sign(admin, config.jwtSecretKey, { expiresIn: config.expiresIn })
+    const tokenStr = jwt.sign(admin, config.token.jwtSecretKey, { expiresIn: config.token.expiresIn })
     res.json({
       success:true,
       code: 20000,

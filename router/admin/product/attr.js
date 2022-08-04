@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const router_handle_admin_attr =require('../../router_handle/admin/attr')
-const {admin_schema_attr} =require('../../schema/admin/attr')
+const router_handle_admin_attr =require('../../../router_handle/admin/product/attr')
+const {admin_schema_attr} =require('../../../schema/admin/product/attr')
 //导入验证表单数据的中间件
 const expressJoi =require('@escook/express-joi')
 //管理员获取指定分类下的所有attrList

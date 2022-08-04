@@ -1,4 +1,4 @@
-const db = require('../../db')
+const db = require('../../../db')
 
 //获取平台属性接口函数
 exports.getAttrInfoList = async (req, res) => {

@@ -1,4 +1,8 @@
-const db = require('../../db')
+const db = require('../../../db')
+//  用来加密数据
+const CryptoJS = require("crypto-js");
+
+const config = require('../../../config')
 //获取账号数据列表
 exports.getPswManagerList = (req, res) => {
   let { page, limit } = req.params
@@ -20,6 +24,15 @@ exports.getPswManagerList = (req, res) => {
     const sqlA = `select * from passwordManager where username=? limit ${page},${limit}  `
     db.query(sqlA, username, (err, results1) => {
       if (err) return res.cc(err)
+      //results1就是获取到的数据
+      //遍历results1
+      results1.forEach(item => {
+        //遍历results1的对象属性
+        for (let key of Object.keys(item)) {
+          if(item[key])
+          item[key]=CryptoJS.AES.decrypt(item[key], config.pswStore.key).toString(CryptoJS.enc.Utf8);
+        }
+      });
       res.json({
         code: 200,
         message: '获取数据成功',
@@ -33,12 +46,19 @@ exports.getPswManagerList = (req, res) => {
 }
 //增加数据
 exports.addPswManager = (req, res) => {
-  //获取前端发送过来的数据
+  //1.获取前端发送过来的数据
   const dataInfo = req.body
-  //根据token获取username
+  //2.根据token获取username
   const { username } = req.user
-  //sql语句
+  //3.对要添加的数据进行加密
+    //3.1遍历对象
+    for (let key of Object.keys(dataInfo)) {
+      if(dataInfo[key])
+      dataInfo[key]=CryptoJS.AES.encrypt(dataInfo[key], config.pswStore.key).toString();;
+    }
+  //4..sql语句
   const sql = 'insert into passwordManager set?'
+
   db.query(sql, { username: username, LOGO: dataInfo.LOGO, account: dataInfo.account, password: dataInfo.password, name: dataInfo.name }, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows != 1) return res.cc('添加数据失败')
@@ -52,10 +72,16 @@ exports.addPswManager = (req, res) => {
 exports.updatePswManager = (req, res) => {
   //获取前端发送过来的数据
   const dataInfo = req.body
+  const dataId=dataInfo.id
   //保险起见还是获取token里的username
   const { username } = req.user
+  //进行数据加密
+  for (let key of Object.keys(dataInfo)) {
+    if(dataInfo[key])
+    dataInfo[key]=CryptoJS.AES.encrypt(dataInfo[key], config.pswStore.key).toString();;
+  }
   //根据id和username修改数据
-  const sql = `update passwordManager set name="${dataInfo.name}",password="${dataInfo.password}",account="${dataInfo.account}" ,LOGO="${dataInfo.LOGO}" where id="${dataInfo.id}"  `
+  const sql = `update passwordManager set name="${dataInfo.name}",password="${dataInfo.password}",account="${dataInfo.account}" ,LOGO="${dataInfo.LOGO}" where id="${dataId}"  `
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows !== 1) return res.cc('修改数据失败')

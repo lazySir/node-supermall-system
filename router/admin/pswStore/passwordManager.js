@@ -2,7 +2,7 @@
 const express = require('express')
 const router =express.Router()
 
-const router_handle_admin_pswManager = require('../../router_handle/admin/passwordManager')
+const router_handle_admin_pswManager = require('../../../router_handle/admin/pswStore/passwordManager')
 
 
 

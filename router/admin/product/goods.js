@@ -1,8 +1,8 @@
 const express =require('express')
 const router = express.Router()
 
-const router_handle_admin_goods=require('../../router_handle/admin/goods')
-const {admin_schema_category2Id,admin_schema_category3Id} =require('../../schema/admin/goods')
+const router_handle_admin_goods=require('../../../router_handle/admin/product/goods')
+const {admin_schema_category2Id,admin_schema_category3Id} =require('../../../schema/admin/product/goods')
 //导入验证表单数据的中间件
 const expressJoi =require('@escook/express-joi')
 //创建管理员获取三级分类路由

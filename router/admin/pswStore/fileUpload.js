@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const router_handle_admin_file = require('../../router_handle/admin/fileUpload')
+const router_handle_admin_file = require('../../../router_handle/admin/pswStore/fileUpload')
 /**
  更新头像要用到的插件
  */
