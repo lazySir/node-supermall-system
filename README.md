@@ -261,6 +261,8 @@ method：post
 
 Header：Authorization ：token
 
+data:pswForm
+
 # 上传图片
 
 url：/api/fileUpload
@@ -272,3 +274,23 @@ Body：{
 file： key：img value ：
 
 }
+
+
+# 账号密码管理修改数据接口
+
+url:/admin/updatePswManager
+
+method:put
+
+Header：Authorization ：token
+
+data:pswForm
+
+# 账号密码管理删除数据接口
+
+url：/admin/addPswManager/:id
+
+method:delete
+
+Header：Authorization ：token
+
