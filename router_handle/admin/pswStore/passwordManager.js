@@ -1,6 +1,6 @@
 const db = require('../../../db')
 //  用来加密数据
-const CryptoJS = require("crypto-js");
+const CryptoJS = require('crypto-js')
 
 const config = require('../../../config')
 //获取账号数据列表
@@ -26,13 +26,13 @@ exports.getPswManagerList = (req, res) => {
       if (err) return res.cc(err)
       //results1就是获取到的数据
       //遍历results1
-      results1.forEach(item => {
+      results1.forEach((item) => {
         //遍历results1的对象属性
-        for (let key of Object.keys(item)) {
-          if(item[key])
-          item[key]=CryptoJS.AES.decrypt(item[key], config.pswStore.key).toString(CryptoJS.enc.Utf8);
+        for(let key in item){
+          if(key!="id")
+          item[key] = CryptoJS.AES.decrypt(item[key], config.pswStore.key).toString(CryptoJS.enc.Utf8)
         }
-      });
+      })
       res.json({
         code: 200,
         message: '获取数据成功',
@@ -51,11 +51,10 @@ exports.addPswManager = (req, res) => {
   //2.根据token获取username
   const { username } = req.user
   //3.对要添加的数据进行加密
-    //3.1遍历对象
-    for (let key of Object.keys(dataInfo)) {
-      if(dataInfo[key])
-      dataInfo[key]=CryptoJS.AES.encrypt(dataInfo[key], config.pswStore.key).toString();;
-    }
+  //3.1遍历对象
+  for (let key of Object.keys(dataInfo)) {
+    if (dataInfo[key]) dataInfo[key] = CryptoJS.AES.encrypt(dataInfo[key], config.pswStore.key).toString()
+  }
   //4..sql语句
   const sql = 'insert into passwordManager set?'
 
@@ -72,29 +71,35 @@ exports.addPswManager = (req, res) => {
 exports.updatePswManager = (req, res) => {
   //获取前端发送过来的数据
   const dataInfo = req.body
-  const dataId=dataInfo.id
   //保险起见还是获取token里的username
   const { username } = req.user
+
+
   //进行数据加密
-  for (let key of Object.keys(dataInfo)) {
-    if(dataInfo[key])
-    dataInfo[key]=CryptoJS.AES.encrypt(dataInfo[key], config.pswStore.key).toString();;
+  // for (let key of Object.keys(dataInfo)) {
+  //   if (dataInfo[key]) dataInfo[key] = CryptoJS.AES.encrypt(dataInfo[key], config.pswStore.key).toString()
+  // }
+  for(let item in dataInfo){
+    if(item!="id"){
+      dataInfo[item] = CryptoJS.AES.encrypt(dataInfo[item], config.pswStore.key).toString()
+    }
   }
+
   //根据id和username修改数据
-  const sql = `update passwordManager set name="${dataInfo.name}",password="${dataInfo.password}",account="${dataInfo.account}" ,LOGO="${dataInfo.LOGO}" where id="${dataId}"  `
+  const sql = `update passwordManager set name="${dataInfo.name}",password="${dataInfo.password}",account="${dataInfo.account}" ,LOGO="${dataInfo.LOGO}" where id="${dataInfo.id}"  `
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     if (results.affectedRows !== 1) return res.cc('修改数据失败')
-    return res.cc('修改数据成功',200)
+    return res.cc('修改数据成功', 200)
   })
 }
 //删除数据
-exports.deletePswManager=(req,res)=>{
-  const pswID=req.params.id
-  const sql=`delete from passwordManager where id=?`
-  db.query(sql,pswID,(err,results)=>{
-    if(err)return res.cc(err)
+exports.deletePswManager = (req, res) => {
+  const pswID = req.params.id
+  const sql = `delete from passwordManager where id=?`
+  db.query(sql, pswID, (err, results) => {
+    if (err) return res.cc(err)
     if (results.affectedRows !== 1) return res.cc('删除数据失败')
-    return res.cc('删除数据成功',200)
+    return res.cc('删除数据成功', 200)
   })
 }
