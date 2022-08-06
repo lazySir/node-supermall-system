@@ -294,3 +294,50 @@ method:delete
 
 Header：Authorization ：token
 
+# tradeMark获取列表
+
+url：/admin/product/tradeMark/get/:page/:limit
+
+method:get
+
+Header：Authorization ：token
+
+# tradeMark新增品牌
+
+url：/admin/product/tradeMark/add
+
+method：post
+
+Header：Authorization ：token
+
+data:pswForm
+
+# tradeMark上传图片
+
+url：/api/tradeMark/fileUpload
+
+method：post
+
+Body：{
+
+file： key：img value ：
+
+}
+
+# tradeMark修改数据接口
+
+url:/admin/product/tradeMark/update
+
+method:put
+
+Header：Authorization ：token
+
+data:pswForm
+
+# tradeMark删除数据接口
+
+url：/admin/product/tradeMark/delete/:id
+
+method:delete
+
+Header：Authorization ：token
