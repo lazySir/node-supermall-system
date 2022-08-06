@@ -29,7 +29,7 @@ exports.getPswManagerList = (req, res) => {
       results1.forEach((item) => {
         //遍历results1的对象属性
         for(let key in item){
-          if(key!="id")
+          if(key!="id"&&key!='username')
           item[key] = CryptoJS.AES.decrypt(item[key], config.pswStore.key).toString(CryptoJS.enc.Utf8)
         }
       })

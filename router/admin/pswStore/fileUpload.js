@@ -14,5 +14,5 @@ const router_handle_admin_file = require('../../../router_handle/admin/pswStore/
    },
  })
  const upload = multer({ storage: storage })
-router.post('/fileUpload', upload.single('img'), router_handle_admin_file.fileUpload)
+router.post('/pswStore/fileUpload', upload.single('img'), router_handle_admin_file.fileUpload)
 module.exports=router
