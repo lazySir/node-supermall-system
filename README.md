@@ -247,7 +247,7 @@ Header：Authorization ：token
 
 # 获取账号密码管理获取列表
 
-url：http://127.0.0.1:3007/admin/getPswManagerList/:page/:limit
+url：/admin/pswStore/get/:page/:limit
 
 method:get
 
@@ -255,7 +255,7 @@ Header：Authorization ：token
 
 # 账号密码管理添加数据
 
-url：/admin/addPswManager
+url：/admin/pswStore/add
 
 method：post
 
@@ -265,7 +265,7 @@ data:pswForm
 
 # 上传图片
 
-url：/api/fileUpload
+url：/api/pswStore/fileUpload
 
 method：post
 
@@ -278,7 +278,7 @@ file： key：img value ：
 
 # 账号密码管理修改数据接口
 
-url:/admin/updatePswManager
+url:/admin/pswStore/update
 
 method:put
 
@@ -288,7 +288,7 @@ data:pswForm
 
 # 账号密码管理删除数据接口
 
-url：/admin/addPswManager/:id
+url：/admin/pswStore/delete/:id
 
 method:delete
 
