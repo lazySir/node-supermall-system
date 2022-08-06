@@ -68,7 +68,9 @@ app.use('/api',adminAccount)
 //管理员账户信息
 const adminInfo =require('./router/admin/adminInfo')
 app.use('/admin',adminInfo)
-
+//上传图片
+const fileUpload =require('./router/admin/public/fileUpload')
+app.use('/api',fileUpload)
 
 
 
@@ -90,9 +92,7 @@ app.use('/admin',adminGetAttrRouter)
 //管理账号密码
 const passwordManager = require('./router/admin/pswStore/passwordManager')
 app.use('/admin',passwordManager)
-//上传头像
-const fileUpload =require('./router/admin/pswStore/fileUpload')
-app.use('/api',fileUpload)
+
 
 
 

@@ -21,7 +21,7 @@ exports.changeAvatar = (req, res, next) => {
   // req.file 是 `avatar` 文件的信息
   // req.body 将具有文本域数据，如果存在的话
   let file = req.file
-  const sqlStr = `update userinfo  set head_img=("${'/userImg/' + file.originalname}") where phone=?`
+  const sqlStr = `update userinfo  set head_img=("${'/user/fileUpload/userImg/' + file.originalname}") where phone=?`
   db.query(sqlStr, req.user.phone, (err, results) => {
     if (err) return res.cc(err)
     return res.json({
