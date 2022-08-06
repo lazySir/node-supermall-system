@@ -82,7 +82,9 @@ app.use('/admin',adminGetCategoryRouter)
 //管理员获取指定分类下的平台属性
 const adminGetAttrRouter=require('./router/admin/product/attr')
 app.use('/admin',adminGetAttrRouter)
-
+//获取品牌列表
+const adminGetTradeMarkList =require('./router/admin/product/tradeMark')
+app.use('/admin',adminGetTradeMarkList)
 
 
 
