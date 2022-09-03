@@ -77,7 +77,7 @@ app.use('/api',fileUpload)
 
 //----------------产品模块----------------------------------
 //管理员获取商品分类路由
-const adminGetCategoryRouter = require('./router/admin/product/goods')
+const adminGetCategoryRouter = require('./router/admin/product/category')
 app.use('/admin',adminGetCategoryRouter)
 //管理员获取指定分类下的平台属性
 const adminGetAttrRouter=require('./router/admin/product/attr')
