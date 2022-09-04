@@ -4,7 +4,7 @@ exports.token={
 	//加密和解密Token的密钥
 	jwtSecretKey:'lzh1115',
 	//有效时长
-	expiresIn:'1h'
+	expiresIn:'24h'
 }
 
 exports.pswStore={
