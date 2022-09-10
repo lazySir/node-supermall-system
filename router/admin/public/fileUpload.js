@@ -30,4 +30,16 @@ const router_handle_admin_file = require('../../../router_handle/admin/public/fi
 })
  const tradeMarkUpload = multer({ storage: tradeMark })
  router.post('/product/tradeMark/fileUpload', tradeMarkUpload.single('img'), router_handle_admin_file.tradeMarkImg)
-module.exports=router
+//-----------------------------------------------------------------
+ //spu管理
+ const spu = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/admin/fileUpload/spuImg/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  },
+})
+ const spuUpload = multer({ storage: spu })
+ router.post('/product/spu/fileUpload', spuUpload.single('img'), router_handle_admin_file.spuImg)
+ module.exports=router

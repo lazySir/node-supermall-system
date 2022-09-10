@@ -184,3 +184,18 @@ exports.getBrandByName = async (req, res) => {
     })
   })
 }
+
+//根据分类id获取品牌
+exports.getBrandListByCategoryId=(req,res)=>{
+  const {category1Id,category2Id,category3Id}=req.params
+  const sql=`select * from tradeMark where category1Id="${category1Id}" and category2Id="${category2Id}" and category3Id="${category3Id}"`
+  db.query(sql,(err,results)=>{
+    if(err) return res.cc(err)
+    if(results.length==0) return res.cc('无记录')
+    res.json({
+      code:200,
+      message:'获取数据成功',
+      data:results
+    })
+  })
+}

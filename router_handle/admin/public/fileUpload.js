@@ -23,3 +23,12 @@ exports.tradeMarkImg=(req,res)=>{
    imgUrl: `http://127.0.0.1:3007${'/admin/fileUpload/tradeMarkImg/' + file.originalname}`,
  })
 }
+//spu 品牌管理上传照片
+exports.spuImg=(req,res)=>{
+  let file = req.file
+  return res.json({
+   code:200,
+   message:'上传头像成功',
+   imgUrl: `http://127.0.0.1:3007${'/admin/fileUpload/spuImg/' + file.originalname}`,
+ })
+}
