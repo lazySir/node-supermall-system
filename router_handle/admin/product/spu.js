@@ -502,32 +502,34 @@ exports.updateSpu = async (req, res) => {
   } catch (error) {
     res.cc(error)
   }
-    //4查询spu_sale表的数据
-    const sqlG=`select spu_sale_name_id from spu_sale where spu_sale_id=?`
-    try {
-      resultsSaleNameId = await new Promise((resolve, reject) => {
-        db.query(sqlG, resultsSpu.spu_sale_id, (err, results) => {
+  //4查询spu_sale表的数据
+  const sqlG = `select spu_sale_name_id from spu_sale where spu_sale_id=?`
+  try {
+    resultsSaleNameId = await new Promise((resolve, reject) => {
+      db.query(sqlG, resultsSpu.spu_sale_id, (err, results) => {
+        if (err) reject(err)
+        if (results.length < 1) reject('查询spu_sale表失败')
+        resolve(results)
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //删除spu_sale_list表
+  try {
+    const sql = `delete from spu_sale_list where spu_sale_name_id=?`
+    let resultsA = await new Promise((resolve, reject) => {
+      for (let i = 0; i < resultsSaleNameId.length; i++) {
+        db.query(sql, resultsSaleNameId[i].spu_sale_name_id, (err, results) => {
           if (err) reject(err)
-          if (results.length < 1) reject('查询spu_sale表失败')
-          resolve(results)
+          if (results.affectedRows < 1) reject('删除spu_sale_list表失败')
+          resolve('ok')
         })
-      })
-    } catch (error) {
-      res.cc(error)
-    }
-    //删除spu_sale_list表
-    try{
-      const sql =`delete from spu_sale_list where spu_sale_name_id=?`
-      let resultsA = await new Promise((resolve, reject) =>{
-        for (let i =0;i<resultsSaleNameId.length;i++){
-          db.query(sql,resultsSaleNameId[i].spu_sale_name_id,(err,results)=>{
-            if(err)reject(err)
-            if(results.affectedRows<1)reject('删除spu_sale_list表失败')
-            resolve('ok')
-          })
-        }
-      })
-    }catch(error){res.cc(error)}
+      }
+    })
+  } catch (error) {
+    res.cc(error)
+  }
   //4.2删除spu_sale表
   try {
     let resultsA = await new Promise((resolve, reject) => {
@@ -574,7 +576,48 @@ exports.updateSpu = async (req, res) => {
     res.cc(error)
   }
   res.json({
-    code:200,
-    message:'更新成功！'
+    code: 200,
+    message: '更新成功！',
+  })
+}
+
+//根据spu_id获取sku
+exports.getSkuById = async (req, res) => {
+  const { spu_id } = req.params
+  let resultsSku = ''
+  try {
+    await new Promise((resovle, reject) => {
+      const sql = `select * from sku where spu_id=?`
+      db.query(sql, spu_id, (err, results) => {
+        if (err) reject(err)
+        if (results.length < 1) reject('查询sku表失败')
+        resultsSku = results
+        resovle()
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //查询默认图片  根据sku_img_id
+  try {
+    const sql = `select * from sku_img where sku_img_id=? and isDefault=1 `
+    for (let i = 0; i < resultsSku.length; i++) {
+      await new Promise((resovle, reject) => {
+        db.query(sql, resultsSku[i].sku_img_id, (err, results) => {
+          if (err) res.cc(err)
+          if (results.length>0) {
+            resultsSku[i].sku_DefaultImg = results[0].sku_img_url
+          }
+          resovle()
+        })
+      })
+    }
+  } catch (error) {
+    res.cc(error)
+  }
+  res.json({
+    code: 200,
+    message: '查询成功',
+    data: resultsSku,
   })
 }

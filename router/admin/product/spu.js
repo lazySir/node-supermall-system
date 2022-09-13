@@ -17,4 +17,6 @@ router.post('/product/spu/addSku',router_handle_admin_spu.addSku)
 router.get('/product/spu/getSpuInfoById/:spu_Id',router_handle_admin_spu.getSpuInfoById)
 //修改spu
 router.put('/product/spu/updateSpu',router_handle_admin_spu.updateSpu)
+//根据spu_id获取sku列表
+router.get('/product/spu/getSkuById/:spu_id',router_handle_admin_spu.getSkuById)
 module.exports=router
