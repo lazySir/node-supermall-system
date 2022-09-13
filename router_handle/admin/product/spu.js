@@ -586,13 +586,13 @@ exports.getSkuById = async (req, res) => {
   const { spu_id } = req.params
   let resultsSku = ''
   try {
-    await new Promise((resovle, reject) => {
+    await new Promise((resolve, reject) => {
       const sql = `select * from sku where spu_id=?`
       db.query(sql, spu_id, (err, results) => {
         if (err) reject(err)
         if (results.length < 1) reject('查询sku表失败')
         resultsSku = results
-        resovle()
+        resolve()
       })
     })
   } catch (error) {
@@ -602,13 +602,13 @@ exports.getSkuById = async (req, res) => {
   try {
     const sql = `select * from sku_img where sku_img_id=? and isDefault=1 `
     for (let i = 0; i < resultsSku.length; i++) {
-      await new Promise((resovle, reject) => {
+      await new Promise((resolve, reject) => {
         db.query(sql, resultsSku[i].sku_img_id, (err, results) => {
           if (err) res.cc(err)
-          if (results.length>0) {
+          if (results.length > 0) {
             resultsSku[i].sku_DefaultImg = results[0].sku_img_url
           }
-          resovle()
+          resolve()
         })
       })
     }
@@ -619,5 +619,169 @@ exports.getSkuById = async (req, res) => {
     code: 200,
     message: '查询成功',
     data: resultsSku,
+  })
+}
+//根据spu_id删除spu sku等所有信息
+exports.deleteSpu = async (req, res) => {
+  const { spu_id } = req.params
+  let resultsSpu = ''
+  let resultsSpu_sale = ''
+  let resultsSku = ''
+  //1.查询spu表
+  try {
+    resultsSpu = await new Promise((resolve, reject) => {
+      const sql = `select * from spu where id=?`
+      db.query(sql, spu_id, (err, results) => {
+        if (err) reject(err)
+        if (results.length < 1) reject('查询spu表失败')
+        resolve(results[0])
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //2.删除spu表数据
+  try {
+    const sql = 'delete from spu where id= ? '
+    await new Promise((resolve, reject) => {
+      db.query(sql, spu_id, (err, results) => {
+        if (err) reject(err)
+        if (results.affectedRows < 1) reject('删除spu表失败')
+        resolve('ok')
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  // //3.删除spu_img表
+  try {
+    const sql = `delete from spu_img where spu_img_id=?`
+    await new Promise((resolve, reject) => {
+      db.query(sql, resultsSpu.spu_img_id, (err, results) => {
+        if (err) reject(err)
+        if (results.affectedRows < 1) reject('删除spu_img表失败')
+        resolve('ok')
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //4.删除spu_sale表
+  //4.1查询spu_sale表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = `select spu_sale_name_id from spu_sale where spu_sale_id=?`
+      db.query(sql, resultsSpu.spu_sale_id, (err, results) => {
+        if (err) reject(err)
+        if (results.length < 1) reject('查询spu_sale表失败')
+        resultsSpu_sale = results
+        resolve('ok')
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  // 4.2删除spu_sale_list表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = 'delete from spu_sale_list where spu_sale_name_id=?'
+      resultsSpu_sale.forEach((item) => {
+        db.query(sql, item.spu_sale_name_id, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows < 1) reject('删除spu_sale_list表失败')
+          resolve('ok')
+        })
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //4.3删除spu_sale表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = 'delete from spu_sale where spu_sale_id=?'
+      db.query(sql, resultsSpu.spu_sale_id, (err, results) => {
+        if (err) reject(err)
+        if (results.affectedRows < 1) reject('删除spu_sale表失败')
+        resolve('ok')
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //5.查询sku表
+  try {
+    resultsSku = await new Promise((resolve, reject) => {
+      const sql = 'select * from sku where spu_id=?'
+      db.query(sql, spu_id, (err, results) => {
+        if (err) reject(err)
+        if (results.length < 1) reject('查询sku表失败')
+        resolve(results)
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //6.删除sku表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = 'delete from sku where spu_id=?'
+      db.query(sql, spu_id, (err, results) => {
+        if (err) reject(err)
+        if (results.affectedRows < 1) reject('删除sku表失败')
+        resolve('ok')
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //7.删除sku_img表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = 'delete from sku_img where sku_img_id=?'
+      resultsSku.forEach((item) => {
+        db.query(sql, item.sku_img_id, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows < 1) reject('删除sku_img表失败')
+          resolve('ok')
+        })
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //8.删除sku_sale表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = 'delete from sku_sale where sku_sale_id=?'
+      resultsSku.forEach((item) => {
+        db.query(sql, item.sku_sale_id, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows < 1) reject('删除sku_sale表失败')
+          resolve('ok')
+        })
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  //9.删除sku_attr表
+  try {
+    await new Promise((resolve, reject) => {
+      const sql = 'delete from sku_attr where sku_attr_id=?'
+      resultsSku.forEach((item) => {
+        db.query(sql, item.sku_attr_id, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows < 1) reject('删除sku_attr表失败')
+          resolve('ok')
+        })
+      })
+    })
+  } catch (error) {
+    res.cc(error)
+  }
+  res.json({
+    code: 200,
+    message: '删除成功！',
   })
 }

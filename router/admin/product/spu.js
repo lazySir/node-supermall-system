@@ -19,4 +19,6 @@ router.get('/product/spu/getSpuInfoById/:spu_Id',router_handle_admin_spu.getSpuI
 router.put('/product/spu/updateSpu',router_handle_admin_spu.updateSpu)
 //根据spu_id获取sku列表
 router.get('/product/spu/getSkuById/:spu_id',router_handle_admin_spu.getSkuById)
+//根据spu_id深处spu列表
+router.delete('/product/spu/deleteById/:spu_id',router_handle_admin_spu.deleteSpu)
 module.exports=router
