@@ -77,10 +77,12 @@ app.use('/admin', adminAttrModule)
 //品牌管理
 const adminTradeMarkModule = require('./router/admin/product/tradeMark')
 app.use('/admin', adminTradeMarkModule)
-//sku管理
+//spu管理
 const adminSpuModule = require('./router/admin/product/spu')
 app.use('/admin', adminSpuModule)
-
+//sku管理
+const adminSkuModule = require('./router/admin/product/sku')
+app.use('/admin', adminSkuModule)
 //---------------账号密码存储模块----------------------------
 //管理账号密码
 const passwordManager = require('./router/admin/pswStore/passwordManager')
