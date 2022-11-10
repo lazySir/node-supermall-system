@@ -317,7 +317,6 @@ exports.addSku = async (req, res) => {
   //3.添加sku表数据
   const sqlC = `insert into sku set ?`
   try {
-    console.log(totalSku instanceof Number)
     let resultsC = await new Promise((resolve, reject) => {
       db.query(
         sqlC,
@@ -335,7 +334,7 @@ exports.addSku = async (req, res) => {
   }
 
   //4.判断sku_sale表有多少数据
-  const sqlD = `select count(*) as total from spu_sale`
+  const sqlD = `select count(*) as total from sku_sale`
   try {
     totalSale = await new Promise((resolve, reject) => {
       db.query(sqlD, (err, results) => {
@@ -646,7 +645,7 @@ exports.deleteSpu = async (req, res) => {
     await new Promise((resolve, reject) => {
       db.query(sql, spu_id, (err, results) => {
         if (err) reject(err)
-        if (results.affectedRows < 1) reject('删除spu表失败')
+        // if (results.affectedRows < 1) reject('删除spu表失败')
         resolve('ok')
       })
     })
@@ -710,76 +709,96 @@ exports.deleteSpu = async (req, res) => {
     res.cc(error)
   }
   //5.查询sku表
+  let flag 
   try {
-    resultsSku = await new Promise((resolve, reject) => {
+     flag = await new Promise((resolve, reject) => {
       const sql = 'select * from sku where spu_id=?'
       db.query(sql, spu_id, (err, results) => {
         if (err) reject(err)
-        if (results.length < 1) reject('查询sku表失败')
-        resolve(results)
+        if (results.length < 1) {
+          resolve(false)
+        }else{
+          resolve(true)
+        }
       })
     })
   } catch (error) {
     res.cc(error)
   }
-  //6.删除sku表
-  try {
-    await new Promise((resolve, reject) => {
-      const sql = 'delete from sku where spu_id=?'
-      db.query(sql, spu_id, (err, results) => {
-        if (err) reject(err)
-        if (results.affectedRows < 1) reject('删除sku表失败')
-        resolve('ok')
-      })
-    })
-  } catch (error) {
-    res.cc(error)
-  }
-  //7.删除sku_img表
-  try {
-    await new Promise((resolve, reject) => {
-      const sql = 'delete from sku_img where sku_img_id=?'
-      resultsSku.forEach((item) => {
-        db.query(sql, item.sku_img_id, (err, results) => {
+  if(flag){
+    try {
+      resultsSku = await new Promise((resolve, reject) => {
+        const sql = 'select * from sku where spu_id=?'
+        db.query(sql, spu_id, (err, results) => {
           if (err) reject(err)
-          if (results.affectedRows < 1) reject('删除sku_img表失败')
+          if (results.length < 1) reject('查询sku表失败')
+          resolve(results)
+           
+        })
+      })
+    } catch (error) {
+      res.cc(error)
+    }
+    //6.删除sku表
+    try {
+      await new Promise((resolve, reject) => {
+        const sql = 'delete from sku where spu_id=?'
+        db.query(sql, spu_id, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows < 1) reject('删除sku表失败')
           resolve('ok')
         })
       })
-    })
-  } catch (error) {
-    res.cc(error)
-  }
-  //8.删除sku_sale表
-  try {
-    await new Promise((resolve, reject) => {
-      const sql = 'delete from sku_sale where sku_sale_id=?'
-      resultsSku.forEach((item) => {
-        db.query(sql, item.sku_sale_id, (err, results) => {
-          if (err) reject(err)
-          if (results.affectedRows < 1) reject('删除sku_sale表失败')
-          resolve('ok')
+    } catch (error) {
+      res.cc(error)
+    }
+    //7.删除sku_img表
+    try {
+      await new Promise((resolve, reject) => {
+        const sql = 'delete from sku_img where sku_img_id=?'
+        resultsSku.forEach((item) => {
+          db.query(sql, item.sku_img_id, (err, results) => {
+            if (err) reject(err)
+            if (results.affectedRows < 1) reject('删除sku_img表失败')
+            resolve('ok')
+          })
         })
       })
-    })
-  } catch (error) {
-    res.cc(error)
-  }
-  //9.删除sku_attr表
-  try {
-    await new Promise((resolve, reject) => {
-      const sql = 'delete from sku_attr where sku_attr_id=?'
-      resultsSku.forEach((item) => {
-        db.query(sql, item.sku_attr_id, (err, results) => {
-          if (err) reject(err)
-          if (results.affectedRows < 1) reject('删除sku_attr表失败')
-          resolve('ok')
+    } catch (error) {
+      res.cc(error)
+    }
+    //8.删除sku_sale表
+    try {
+      await new Promise((resolve, reject) => {
+        const sql = 'delete from sku_sale where sku_sale_id=?'
+        resultsSku.forEach((item) => {
+          db.query(sql, item.sku_sale_id, (err, results) => {
+            if (err) reject(err)
+            if (results.affectedRows < 1) reject('删除sku_sale表失败')
+            resolve('ok')
+          })
         })
       })
-    })
-  } catch (error) {
-    res.cc(error)
+    } catch (error) {
+      res.cc(error)
+    }
+    //9.删除sku_attr表
+    try {
+      await new Promise((resolve, reject) => {
+        const sql = 'delete from sku_attr where sku_attr_id=?'
+        resultsSku.forEach((item) => {
+          db.query(sql, item.sku_attr_id, (err, results) => {
+            if (err) reject(err)
+            if (results.affectedRows < 1) reject('删除sku_attr表失败')
+            resolve('ok')
+          })
+        })
+      })
+    } catch (error) {
+      res.cc(error)
+    }
   }
+
   res.json({
     code: 200,
     message: '删除成功！',

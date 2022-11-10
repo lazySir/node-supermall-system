@@ -66,7 +66,16 @@ app.use('/admin', adminInfo)
 //上传图片
 const fileUpload = require('./router/admin/public/fileUpload')
 app.use('/api', fileUpload)
-
+//----------------后端权限模块-----------------------------
+//菜单管理
+const adminAclMenus = require('./router/admin/acl/menus')
+app.use('/admin', adminAclMenus)
+//角色管理
+const adminAclRole = require('./router/admin/acl/role')
+app.use('/admin', adminAclRole)
+//用户管理
+const adminUser = require('./router/admin/acl/user')
+app.use('/admin',adminUser)
 //----------------产品模块----------------------------------
 //分类管理
 const adminCategoryModuel = require('./router/admin/product/category')
@@ -122,5 +131,6 @@ app.use('/user', userGetAllGoodsCategory)
 //---------------服务器------------------
 //创建服务器
 app.listen(3007, () => {
+  
   console.log('api server is running at http://127.0.0.1:3007')
 })

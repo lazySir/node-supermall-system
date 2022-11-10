@@ -1,0 +1,12 @@
+const express = require('express')
+const router = express.Router()
+const router_handle_admin_user =require('../../../router_handle/admin/acl/user')
+router.post('/acl/user/register',router_handle_admin_user.register)
+router.get('/acl/user/get/:page/:limit',router_handle_admin_user.get)
+router.put('/acl/user/updateState/:id/:state',router_handle_admin_user.updateState)
+router.get('/acl/user/searchUser/:page/:limit/:name',router_handle_admin_user.searchUser)
+router.delete('/acl/user/deleteUser/:admin_id',router_handle_admin_user.deleteUser)
+router.put('/acl/user/updateUser',router_handle_admin_user.updateUser)
+router.get('/acl/user/getUserRole/:roles_id',router_handle_admin_user.getUserRole)
+router.put('/acl/user/updateUserRole',router_handle_admin_user.updateUserRole)
+module.exports=router
