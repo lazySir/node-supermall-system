@@ -9,4 +9,5 @@ router.delete('/acl/user/deleteUser/:admin_id',router_handle_admin_user.deleteUs
 router.put('/acl/user/updateUser',router_handle_admin_user.updateUser)
 router.get('/acl/user/getUserRole/:roles_id',router_handle_admin_user.getUserRole)
 router.put('/acl/user/updateUserRole',router_handle_admin_user.updateUserRole)
+router.delete('/acl/user/deleteUsers',router_handle_admin_user.deleteUsers)
 module.exports=router

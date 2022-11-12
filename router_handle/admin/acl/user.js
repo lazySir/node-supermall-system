@@ -581,3 +581,65 @@ exports.updateUserRole = async (req, res) => {
     message: '修改成功',
   })
 }
+//根据admin_id批量删除用户
+exports.deleteUsers = async (req, res) => {
+  //1.获取前端传递过来的admin_id数组
+  const admin_idList = req.body
+  //2.根据admin_idList删除admin表中的数据
+  try {
+    await new Promise((resolve, reject) => {
+      const sqlA = 'delete from admin where admin_id in (?)'
+      db.query(sqlA, [admin_idList], (err, results) => {
+        if (err) reject(err)
+        resolve()
+      })
+    })
+  } catch (error) {
+    return res.cc(error)
+  }
+  //3.根据admin_idList获取adminInfo1表中的roles_idList
+  let roles_idList = []
+  try {
+    await new Promise((resolve, reject) => {
+      const sqlB = 'select roles_id from adminInfo1 where admin_id in (?)'
+      db.query(sqlB, [admin_idList], (err, results) => {
+        if (err) reject(err)
+        results.forEach((item) => {
+          roles_idList.push(item.roles_id)
+        })
+        resolve()
+      })
+    })
+  } catch (error) {
+    return res.cc(error)
+  }
+  //4.根据roles_idList删除roles表的数据
+  try {
+    await new Promise((resolve, reject) => {
+      const sqlC = 'delete from roles where roles_id in (?)'
+      db.query(sqlC, [roles_idList], (err, results) => {
+        if (err) reject(err)
+        resolve()
+      })
+    })
+  } catch (error) {
+    return res.cc(error)
+  }
+  //5.根据admin_idList删除adminInfo1表中的数据
+  try {
+    await new Promise((resolve, reject) => {
+      const sqlD = 'delete from adminInfo1 where admin_id in (?)'
+      db.query(sqlD, [admin_idList], (err, results) => {
+        if (err) reject(err)
+        resolve()
+      })
+    })
+  } catch (error) {
+    return res.cc(error)
+  }
+  //6.返回成功信息
+  res.json({
+    code: 200,
+    message: '删除成功',
+  })
+}
