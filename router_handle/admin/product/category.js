@@ -308,7 +308,7 @@ exports.updateCategory = async (req, res) => {
       await new Promise((resolve, reject) => {
         const sql = 'select * from goodsCategory1 where category1_name=?'
         db.query(sql, name, (error, results) => {
-          if (err) reject(err)
+          if (error) reject(error)
           if (results.length > 0) reject('已存在此分类')
           resolve()
         })
