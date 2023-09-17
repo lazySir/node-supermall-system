@@ -9,21 +9,37 @@ npm i
 # 依赖说明
 
 @escook/express-joi: 一个用于验证和处理 Express.js 请求参数的中间件。
+
 @hapi/joi: 一个功能强大的 JavaScript 对象模式验证库，用于验证和处理数据。
+
 bcryptjs: 用于进行密码哈希和验证的库，通常用于用户认证和安全性。
+
 body-parser: Express.js 中间件，用于解析请求主体中的数据，如 JSON、URL 编码和表单数据。
+
 cookie-parser: Express.js 中间件，用于解析和处理 HTTP 请求中的 cookie。
+
 cors: 用于处理 Express.js 应用程序中的跨域资源共享（CORS）的中间件。
+
 crypto-js: 一个 JavaScript 加密库，提供了各种加密算法和工具函数。
+
 express: Node.js 的 Web 应用程序框架，用于构建灵活的 Web 服务和 API。
+
 express-jwt: Express.js 中间件，用于验证和解析 JSON Web 令牌（JWT）。
+
 joi: 一个用于数据验证和模式描述的 JavaScript 库，可以用于验证和处理各种数据类型。
+
 jsonwebtoken: 用于生成和验证 JSON Web 令牌（JWT）的库。
+
 multer: 用于处理 Express.js 应用程序中的文件上传的中间件。
+
 mysql: 用于在 Node.js 中连接和操作 MySQL 数据库的库。
+
 node-localstorage: 一个在 Node.js 中模拟浏览器本地存储的库。
+
 nodemailer: 一个用于发送电子邮件的 Node.js 库，支持各种邮件传输协议。
+
 svg-captcha: 用于生成 SVG 格式验证码的库，常用于生成和验证图像验证码。
+
 
 # 运行项目
 
