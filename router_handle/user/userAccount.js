@@ -12,8 +12,8 @@ const LocalStorage = require('node-localstorage').LocalStorage,
   localStorage = new LocalStorage('./scratch')
 
 //注册
-exports.register = (req, res) => {
-  //获取客户端提交到服务器的用户信息
+exports.register = async (req, res) => {
+  // //获取客户端提交到服务器的用户信息
   const userinfo = req.body
   //获取缓存的验证码
   //里面有邮箱（email） code 和 发送时间（time）
@@ -27,58 +27,99 @@ exports.register = (req, res) => {
       code: 205,
       message: '验证码已过期',
     })
+    return
   }
   //如果验证码未过期  且验证码正确
-  if (userCodeInfo.code === userinfo.code) {
-    //定义sql语句查询用户名是否被占用
-    const sqlStr = 'select * from account where phone=?'
-    db.query(sqlStr, userinfo.phone, (err, results) => {
-      //如果执行sql语句失败
-      if (err) {
-        return res.cc(err)
-      }
-      //如果用户名被占用
-      if (results.length > 0) {
-        return res.cc('手机号码已被注册')
-      }
-      //TODO:如果成功 则开始注册
-      userinfo.password = bcrypt.hashSync(userinfo.password, 10)
-      //数据库语句 ：注册账号列表
-      const sql = `insert into account set?`
-      db.query(
-        sql,
-        {
-          phone: userinfo.phone,
-          password: userinfo.password,
-        },
-        (err, results) => {
-          if (err) {
-            return res.cc(err)
-          }
-          if (results.affectedRows != 1) {
-            return res.cc('注册用户失败')
-          }
-        },
-      )
-      //数据库语句：写入用户信息列表
-      const sql1 = `insert into userinfo set?`
-      db.query(sql1, { phone: userinfo.phone, email: userinfo.email }, (err, results) => {
-        if (err) return res.cc(err)
-        if (results.affectedRows != 1) return res.cc('注册用户失败')
+  if (userCodeInfo.code == userinfo.emailCode) {
+    //1.定义sql语句查询用户名是否被占用
+    try {
+      await new Promise((resolve, reject) => {
+        const sql = `select * from admin where username = "${userinfo.username}"`
+        db.query(sql, (err, results) => {
+          if (err) return reject(err)
+          if (results.length > 0) reject('用户名已被占用')
+          resolve()
+        })
       })
-      // 注册成功删除缓存
-      localStorage.removeItem(userinfo.email)
-      res.cc('注册成功', 200)
-    })
+    } catch (err) {
+      return res.cc(err)
+    }
+    //2.如果没有被占用，获取admin表的admin_id的最大值
+    let admin_id = ''
+    try {
+      await new Promise((resolve, reject) => {
+        const sqlB = 'select max(admin_id) as maxId from admin'
+        db.query(sqlB, (err, results) => {
+          if (err) reject(err)
+          admin_id = results[0].maxId + 1
+          resolve()
+        })
+      })
+    } catch (error) {
+      return res.cc(error)
+    }
+    // console.log(userinfo)
+    // 3.对密码进行加密
+    userinfo.password = bcrypt.hashSync(userinfo.password, 10)
+    //4.将数据写入admin表admin_id值为admin_id+1
+    try {
+      await new Promise((resolve, reject) => {
+        const sqlC = 'insert into admin set ?'
+        db.query(sqlC, { username: userinfo.username, password: userinfo.password, admin_id }, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows !== 1) reject('注册失败')
+          resolve()
+        })
+      })
+    } catch (error) {
+      return res.cc(error)
+    }
+    //5.获取adminInfo1表的roles_id的最大值
+    let roles_id = ''
+    try {
+      await new Promise((resolve, reject) => {
+        const sqlD = 'select max(roles_id) as maxId from adminInfo1'
+        db.query(sqlD, (err, results) => {
+          if (err) reject(err)
+          roles_id = results[0].maxId + 1
+          resolve()
+        })
+      })
+    } catch (error) {
+      return res.cc(error)
+    }
+    //6 .获取现在时间格式为yy-mm-dd-hh--mm-ss
+    let date = new Date()
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    let hour = date.getHours()
+    let minute = date.getMinutes()
+    let second = date.getSeconds()
+    let time = year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second
+    //7.将数据写入adminInfo1表
+    try {
+      await new Promise((resolve, reject) => {
+        const sqlD = 'insert into adminInfo1 set ?'
+        db.query(sqlD, { admin_id, createTime: time, updateTime: time, roles_id, name: userinfo.username,email:userinfo.email }, (err, results) => {
+          if (err) reject(err)
+          if (results.affectedRows !== 1) reject('注册失败')
+          resolve()
+        })
+      })
+    } catch (error) {
+      return res.cc(error)
+    }
+    localStorage.removeItem(userinfo.email)
+    res.cc('注册成功', 200)
+    //执行sql语句
   } else {
-    //未过期但是验证码错误
-    res.send({
+    res.json({
       code: 205,
-      message: '验证码输入错误，请重新输入',
+      message: '注册码错误',
     })
   }
 }
-
 //发送验证码接口
 exports.sendCode = (req, res) => {
   //保存验证码和邮箱，时间
@@ -93,7 +134,7 @@ exports.sendCode = (req, res) => {
   user = JSON.stringify(user)
   // 放入缓存中
   localStorage.setItem(email, user)
-  let sql = `select * from userinfo where email= "${email}"`
+  let sql = `select * from adminInfo1 where email= "${email}"`
   db.query(sql, (err, results) => {
     if (err) return res.cc(err)
     if (results.length) {

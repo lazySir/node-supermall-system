@@ -8,9 +8,9 @@ const {user_schema_register,user_schema_login,user_schema_email} =require('../..
 const expressJoi =require('@escook/express-joi')
 
 //注册
-router.post('/register',expressJoi(user_schema_register),router_handle_user.register)
+router.post('/user/register',router_handle_user.register)
 //发送注册验证码
-router.get('/sendCode',expressJoi(user_schema_email),router_handle_user.sendCode)
+router.post('/sendCode',expressJoi(user_schema_email),router_handle_user.sendCode)
 //登录
-router.post('/login',expressJoi(user_schema_login),router_handle_user.login)
+router.post('/user/login',expressJoi(user_schema_login),router_handle_user.login)
 module.exports = router
